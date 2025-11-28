@@ -12,7 +12,6 @@ interface Pokemon {
     id: number;
     nombre: string;
     imagen: string;
-    // hp: number; // Eliminado
 }
 
 const Inicio: React.FC = () => {
@@ -41,7 +40,6 @@ const Inicio: React.FC = () => {
                     nombre: data.name,
                     // Ruta a la imagen 
                     imagen: data.sprites.other['official-artwork'].front_default,
-                    // hp: data.stats[0].base_stat // Ya no cogemos el HP
                 };
 
                 // Guardo el estado, si ha fallado, hago que me muestre ese mensaje en la consola

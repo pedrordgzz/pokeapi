@@ -7,7 +7,6 @@ interface Pokemon {
     id: number;
     nombre: string;
     imagen: string;
-    // hp: number; // Eliminado porque ya no lo usamos
 }
 
 export const GaleriaPokemon: React.FC<{ min: number; max: number }> = ({ min, max }) => {
@@ -25,16 +24,16 @@ export const GaleriaPokemon: React.FC<{ min: number; max: number }> = ({ min, ma
             try {
                 // Creo una lista de 10 números aleatorios simples
                 const peticion = [];
-                const idsGenerados = new Set<number>(); // Añado esto para controlar duplicados
+                const idsGenerados = new Set<number>(); 
 
-                // Cambio el for por un while para asegurar que sean 10 únicos
+                // Uso un while para asegurar que sean 10id únicos
                 while (peticion.length < 10) {
                     const id = Math.floor(Math.random() * (max - min + 1)) + min;
                     
                     // Solo si no ha salido ya, lo añado
                     if (!idsGenerados.has(id)) {
                         idsGenerados.add(id);
-                        // Guardamos la petición (fetch) en el array que será el que luego lea la función map
+                        // Guardo la petición (fetch) en el array que será el que luego lea la función map
                         peticion.push(fetch(`https://pokeapi.co/api/v2/pokemon/${id}`).then(res => res.json()));
                     }
                 }
@@ -42,13 +41,12 @@ export const GaleriaPokemon: React.FC<{ min: number; max: number }> = ({ min, ma
 // Funcion para esperar a que las 10 peticiones terminen a la vez
                 const resultados = await Promise.all(peticion);
 
-// Me quedo con los datos que me interesa y accedo a la imagen y teniendo ya el nombre, id y hp.
+// Me quedo con los datos que me interesa y accedo a la imagen y teniendo ya el nombre y el id.
                 const datosLimpios = resultados.map((data: any) => ({
                     id: data.id,
                     nombre: data.name,
                     // Ruta a la imagen 
                     imagen: data.sprites.other['official-artwork'].front_default,
-                    // hp: data.stats[0].base_stat // Ya no cogemos el HP
                 }));
 
 // Guardo el estado, si ha fallado, hago que me muestre ese mensaje en la consola
@@ -78,8 +76,8 @@ export const GaleriaPokemon: React.FC<{ min: number; max: number }> = ({ min, ma
                     key={p.id}
                     nombre={p.nombre}
                     imagen={p.imagen}
-                    dato={p.id} // Aquí pasamos el ID en vez del HP
-                    etiqueta="Nº Pokedex" // Cambiamos la etiqueta
+                    dato={p.id} 
+                    etiqueta="Nº Pokedex" 
                 />
             ))}
         </div>
