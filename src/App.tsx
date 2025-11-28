@@ -12,10 +12,9 @@ interface Pokemon {
     id: number;
     nombre: string;
     imagen: string;
-    hp: number;
+    // hp: number; // Eliminado
 }
 
-// Componente para que aparezca algo en la página de inicio (Ahora con lógica)
 const Inicio: React.FC = () => {
     // Estado para guardar el pokemon (en este caso solo uno, pero mantengo la estructura)
     const [pokemon, setPokemon] = useState<Pokemon | null>(null);
@@ -42,7 +41,7 @@ const Inicio: React.FC = () => {
                     nombre: data.name,
                     // Ruta a la imagen 
                     imagen: data.sprites.other['official-artwork'].front_default,
-                    hp: data.stats[0].base_stat
+                    // hp: data.stats[0].base_stat // Ya no cogemos el HP
                 };
 
                 // Guardo el estado, si ha fallado, hago que me muestre ese mensaje en la consola
@@ -75,8 +74,8 @@ const Inicio: React.FC = () => {
                     <Card 
                         nombre={pokemon.nombre} 
                         imagen={pokemon.imagen} 
-                        dato={pokemon.hp} 
-                        etiqueta="HP" 
+                        dato={pokemon.id} // Cambiado a ID
+                        etiqueta="Nº Pokedex" // Cambiado etiqueta
                     />
                 )}
             </div>

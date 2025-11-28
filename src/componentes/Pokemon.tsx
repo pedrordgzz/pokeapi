@@ -7,7 +7,7 @@ interface Pokemon {
     id: number;
     nombre: string;
     imagen: string;
-    hp: number;
+    // hp: number; // Eliminado porque ya no lo usamos
 }
 
 export const GaleriaPokemon: React.FC<{ min: number; max: number }> = ({ min, max }) => {
@@ -25,10 +25,18 @@ export const GaleriaPokemon: React.FC<{ min: number; max: number }> = ({ min, ma
             try {
                 // Creo una lista de 10 números aleatorios simples
                 const peticion = [];
-                for (let i = 0; i < 10; i++) {
+                const idsGenerados = new Set<number>(); // Añado esto para controlar duplicados
+
+                // Cambio el for por un while para asegurar que sean 10 únicos
+                while (peticion.length < 10) {
                     const id = Math.floor(Math.random() * (max - min + 1)) + min;
-                    // Guardamos la petición (fetch) en el array que será el que luego lea la función map
-                    peticion.push(fetch(`https://pokeapi.co/api/v2/pokemon/${id}`).then(res => res.json()));
+                    
+                    // Solo si no ha salido ya, lo añado
+                    if (!idsGenerados.has(id)) {
+                        idsGenerados.add(id);
+                        // Guardamos la petición (fetch) en el array que será el que luego lea la función map
+                        peticion.push(fetch(`https://pokeapi.co/api/v2/pokemon/${id}`).then(res => res.json()));
+                    }
                 }
 
 // Funcion para esperar a que las 10 peticiones terminen a la vez
@@ -40,7 +48,7 @@ export const GaleriaPokemon: React.FC<{ min: number; max: number }> = ({ min, ma
                     nombre: data.name,
                     // Ruta a la imagen 
                     imagen: data.sprites.other['official-artwork'].front_default,
-                    hp: data.stats[0].base_stat
+                    // hp: data.stats[0].base_stat // Ya no cogemos el HP
                 }));
 
 // Guardo el estado, si ha fallado, hago que me muestre ese mensaje en la consola
@@ -70,8 +78,8 @@ export const GaleriaPokemon: React.FC<{ min: number; max: number }> = ({ min, ma
                     key={p.id}
                     nombre={p.nombre}
                     imagen={p.imagen}
-                    dato={p.hp}
-                    etiqueta="HP"
+                    dato={p.id} // Aquí pasamos el ID en vez del HP
+                    etiqueta="Nº Pokedex" // Cambiamos la etiqueta
                 />
             ))}
         </div>
